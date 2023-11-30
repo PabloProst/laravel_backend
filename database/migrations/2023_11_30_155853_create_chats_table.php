@@ -14,10 +14,13 @@ return new class extends Migration
         Schema::create('chats', function (Blueprint $table) {
             $table->id();
             $table->text('message');
-            $table->unsignedBigInteger('user_id')->constrained();
-            $table->unsignedBigInteger('room_id')->constrained();
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('room_id');
             $table->timestamp('created_at')->useCurrent();
-            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();    
+            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();   
+            
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('room_id')->references('id')->on('rooms');
         });
     }
 
