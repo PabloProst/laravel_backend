@@ -13,10 +13,13 @@ return new class extends Migration
     {
         Schema::create('room_user', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('room_id')->constrained();
-            $table->unsignedBigInteger('user_id')->constrained();
+            $table->unsignedBigInteger('room_id');
+            $table->unsignedBigInteger('user_id');
             $table->timestamp('created_at')->useCurrent();
-            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();   
+            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();  
+            
+            $table->foreign('room_id')->references('id')->on('rooms');
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 
