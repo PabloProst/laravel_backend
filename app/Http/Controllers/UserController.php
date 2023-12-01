@@ -14,7 +14,7 @@ class UserController extends Controller
         try {
             $users = User::query()
                 ->where('is_active', true)
-                ->get(['id','email','is_active']);
+                ->get(['id','email', 'name', 'nickname', 'is_active']);
 
 
             return response()->json(
