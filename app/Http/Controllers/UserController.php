@@ -38,4 +38,28 @@ class UserController extends Controller
         }
     }
 
+    public function getUserByIdWithCreateRooms(Request $request, $id) {
+        try {
+            $user = User::find($id)->rooms;
+
+            return response()->json(
+                [
+                    "success" => true,
+                    "message" => "Get user by id with course successfully",
+                    "data" => $user
+                ],
+                Response::HTTP_OK
+            );
+        } catch (\Throwable $th) {
+            Log::error($th->getMessage());
+
+            return response()->json(
+                [
+                    "success" => false,
+                    "message" => "Error getting user with courses"
+                ],
+                Response::HTTP_INTERNAL_SERVER_ERROR
+            );
+        }
+    }
 }

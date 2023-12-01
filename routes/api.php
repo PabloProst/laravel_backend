@@ -17,3 +17,13 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::group([
+    'middleware' => [
+        'auth:sanctum',
+        'is_super_admin'
+    ]
+], function () {
+    Route::get('/users', [UserController::class, 'getAllUsers']);
+    Route::get('/users/{id}', [UserController::class, 'getUserByIdWithCreateCourses']);
+});
