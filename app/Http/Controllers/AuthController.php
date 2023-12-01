@@ -70,4 +70,75 @@ class AuthController extends Controller
 
         return $validator;
     }
+
+    public function login(Request $request)
+    {
+        try {
+            $validator = Validator::make($request->all(), [
+                'email' => 'required | email',
+                'password' => 'required',
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json(
+                    [
+                        "success" => false,
+                        "message" => "Error login user",
+                        "error" => $validator->errors()
+                    ],
+                    Response::HTTP_BAD_REQUEST
+                );
+            }
+
+            $email = $request->input('email');
+            $password = $request->input('password');
+            $user = User::query()->where('email', $email)->first();
+
+            if (!$user) {
+                return response()->json(
+                    [
+                        "success" => false,
+                        "message" => "Email or password are invalid 1"
+                    ],
+                    Response::HTTP_NOT_FOUND
+                );
+            }
+
+            // Validamos la contraseña
+            if (!Hash::check($password, $user->password)) {
+                throw new Error('Email or password are invalid 2');
+            }
+
+            // creamos token
+            $token = $user->createToken('apiToken')->plainTextToken;
+
+            return response()->json(
+                [
+                    "success" => true,
+                    "message" => "User Logged",
+                    "token" => $token,
+                    "data" => $user
+                ]
+            );
+        } catch (\Throwable $th) {
+            Log::error($th->getMessage());
+            if($th->getMessage() === 'Email or password are invalid 2') {
+                return response()->json(
+                    [
+                        "success" => false,
+                        "message" => "Email or password are invalid 2"
+                    ],
+                    Response::HTTP_NOT_FOUND
+                );
+            }
+
+            return response()->json(
+                [
+                    "success" => false,
+                    "message" => "Error login user"
+                ],
+                Response::HTTP_INTERNAL_SERVER_ERROR
+            );
+        }
+    }
 }
