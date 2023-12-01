@@ -30,5 +30,13 @@ Route::group([
     Route::get('/users/{id}', [UserController::class, 'getUserByIdWithCreateRooms']);
 });
 
+Route::group([
+    'middleware' => [
+        'auth:sanctum'
+    ]
+], function () {
+    Route::get('/profile', [AuthController::class, 'profile']);
+});
+
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
