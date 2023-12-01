@@ -27,7 +27,7 @@ Route::group([
     ]
 ], function () {
     Route::get('/users', [UserController::class, 'getAllUsers']);
-    Route::get('/users/{id}', [UserController::class, 'getUserByIdWithCreateCourses']);
+    Route::get('/users/{id}', [UserController::class, 'getUserByIdWithCreateRooms']);
 });
 
 Route::post('/register', [AuthController::class, 'register']);
