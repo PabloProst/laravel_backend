@@ -11,6 +11,13 @@ class Rooms extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['name', 'user_id', 'game_id'];
+
+    public function game()
+    {
+        return $this->belongsTo(Game::class, 'game_id');
+    }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
