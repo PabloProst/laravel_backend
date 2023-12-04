@@ -16,38 +16,24 @@ class ChatController extends Controller
     {
         Log::info('Create Message');
         try {
-            $accessToken = $request->bearerToken();
-            $token = PersonalAccessToken::findToken($accessToken);
-            $user = auth()->id();
-            $member_room = RoomUser::query()->where('user_id', $user)->get();
-            print_r($member_room);
-            $message = $request->input('message');
+            $userId = auth()->id();
 
-            if (!$token) {
+            $newMessage = Chat::create(
+                [
+                    "message" => $request->input('message'),
+                    "user_id" => $userId,
+                    "room_id" => $request->input('room_id'),
+                ]
+                );
+
                 return response()->json(
                     [
                         "success" => true,
-                        "message" => "User doesnt exists"
+                        "message" => "Message sent"
                     ],
-                    Response::HTTP_BAD_REQUEST
+                    Response::HTTP_ACCEPTED
                 );
-            }
-
-            if($member_room > 1){
-                $newMessage = Chat::create([
-                    'message' => $message,
-                    'user_id' => $user,
-                ]);
-            }
-
-            return response()->json(
-                [
-                    "success" => true,
-                    "message" => "Message created",
-                    "data" => $newMessage
-                ],
-                Response::HTTP_CREATED
-            );
+       
         } catch (\Throwable $th) {
             Log::error($th->getMessage());
 
@@ -59,8 +45,5 @@ class ChatController extends Controller
                 Response::HTTP_INTERNAL_SERVER_ERROR
             );
         }
-
-
-        return 'Create message';
     }
 }
