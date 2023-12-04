@@ -13,7 +13,8 @@ class RoomUser extends Model
     protected $table = 'room_user';
 
     protected $fillable = [
-        'message',
+        'user_id',
+        'room_id',
     ];
 
     public function userMembers(): BelongsToMany
