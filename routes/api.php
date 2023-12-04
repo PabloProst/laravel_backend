@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RoomController;
+use App\Http\Controllers\RoomUserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -33,8 +34,10 @@ Route::group([
     Route::delete('/message/delete/{id}', [ChatController::class, 'deleteMessageById']);
     Route::put('/message/update/{id}', [ChatController::class, 'updateMessageById']);
     Route::put('/user/update', [userController::class, 'updateUser']);
-    // NEW ROOM
     Route::post('/newroom', [RoomController::class, 'newRoom']);
+    Route::post('/newmember', [RoomUserController::class, 'newMember']);
+    Route::delete('/deletemember', [RoomUserController::class, 'deleteMember']);
+    Route::get('/getallparties', [RoomUserController::class, 'getAllPartiesById']);
 });
 
 Route::post('/register', [AuthController::class, 'register']);

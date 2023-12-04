@@ -12,8 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ChatController extends Controller
 {
-    public function createMessage(Request $request)
-    {
+    public function createMessage(Request $request) {
         Log::info('Create Message');
         try {
             $userId = auth()->id();
