@@ -10,9 +10,12 @@ use Illuminate\Support\Facades\Log;
 use Laravel\Sanctum\PersonalAccessToken;
 use Symfony\Component\HttpFoundation\Response;
 
+use function Laravel\Prompts\error;
+
 class ChatController extends Controller
 {
-    public function createMessage(Request $request) {
+    public function createMessage(Request $request)
+    {
         Log::info('Create Message');
         try {
             $userId = auth()->id();
@@ -112,15 +115,15 @@ class ChatController extends Controller
                     "message" => "Unauthorized. You can only update your own messages.",
                 ], Response::HTTP_UNAUTHORIZED);
             }
-    
+
             $request->validate([
                 'message' => 'required|string',
             ]);
-    
+
             $message->update([
                 'message' => $request->input('message'),
             ]);
-    
+
             return response()->json([
                 "success" => true,
                 "message" => "Message updated",
@@ -128,7 +131,7 @@ class ChatController extends Controller
             ], Response::HTTP_OK);
         } catch (\Throwable $th) {
             Log::error($th->getMessage());
-    
+
             return response()->json([
                 "success" => false,
                 "message" => "Error updating message",
@@ -136,6 +139,25 @@ class ChatController extends Controller
         }
     }
 
+    public function getAllMessages(Request $request)
+    {
+        try {
+            $userId = auth()->id();
+            $messages = Chat::where('user_id', $userId)->get();
     
-
+            return response()->json([
+                "success" => true,
+                "message" => "Messages retrieved",
+                "data" => $messages,
+            ], Response::HTTP_OK);
+        } catch (\Throwable $th) {
+            Log::error($th->getMessage());
+    
+            return response()->json([
+                "success" => false,
+                "message" => "Error retrieving messages",
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+    
 }
