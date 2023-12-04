@@ -94,4 +94,47 @@ class ChatController extends Controller
             );
         }
     }
+
+    public function updateMessageById(Request $request, $id)
+    {
+        try {
+            $message = Chat::find($id);
+
+            if (!$message) {
+                return response()->json([
+                    "success" => false,
+                    "message" => "Message not found",
+                ], Response::HTTP_NOT_FOUND);
+            }
+
+            if ($message->user_id !== auth()->id()) {
+                return response()->json([
+                    "success" => false,
+                    "message" => "Unauthorized. You can only update your own messages.",
+                ], Response::HTTP_UNAUTHORIZED);
+            }
+    
+            $request->validate([
+                'message' => 'required|string',
+            ]);
+    
+            $message->update([
+                'message' => $request->input('message'),
+            ]);
+    
+            return response()->json([
+                "success" => true,
+                "message" => "Message updated",
+                "data" => $message,
+            ], Response::HTTP_OK);
+        } catch (\Throwable $th) {
+            Log::error($th->getMessage());
+    
+            return response()->json([
+                "success" => false,
+                "message" => "Error updating message",
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }

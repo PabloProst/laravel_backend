@@ -30,7 +30,8 @@ Route::group([
     Route::get('/profile', [AuthController::class, 'profile']);
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/message', [ChatController::class, 'createMessage']);
-    Route::delete('/deletemessage/{id}', [ChatController::class, 'deleteMessageById']);
+    Route::delete('/message/delete/{id}', [ChatController::class, 'deleteMessageById']);
+    Route::put('/message/update/{id}', [ChatController::class, 'updateMessageById']);
     Route::put('/user/update', [userController::class, 'updateUser']);
     // NEW ROOM
     Route::post('/newroom', [RoomController::class, 'newRoom']);
