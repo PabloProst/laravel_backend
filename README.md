@@ -68,6 +68,9 @@ The Laravel framework is open-sourced software licensed under the [MIT license](
 
 PERROOOOOO
 Perroooo
+<<<<<<<<< Temporary merge branch 1
 
 asdasdasd
+=========
 perrooooooooo
+>>>>>>>>> Temporary merge branch 2
