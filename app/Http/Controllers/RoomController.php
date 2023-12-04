@@ -15,6 +15,11 @@ class RoomController extends Controller
         try {
             $userId = auth()->id();
 
+            $request->validate([
+                'name' => 'required|string',
+                'game_id' => 'required|exists:games,id',
+            ]);
+
             $newRoom = Rooms::create(
                 [
                     "name" => $request->input('name'),

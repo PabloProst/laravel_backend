@@ -94,8 +94,6 @@ class UserController extends Controller
 
             $user->save();
 
-            // $role->update(['name', $name]);
-
             return response()->json(
                 [
                     "success" => true,
