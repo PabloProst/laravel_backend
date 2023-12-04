@@ -12,33 +12,31 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ChatController extends Controller
 {
-    public function createMessage(Request $request)
-    {
+    public function createMessage(Request $request) {
         Log::info('Create Message');
         try {
             $accessToken = $request->bearerToken();
             $token = PersonalAccessToken::findToken($accessToken);
-            $user = auth()->id();
-            $member_room = RoomUser::query()->where('user_id', $user)->get();
-            print_r($member_room);
+            $user = auth()->user();
+            $member_room = $user->userMembers;
             $message = $request->input('message');
 
             if (!$token) {
                 return response()->json(
                     [
-                        "success" => true,
-                        "message" => "User doesnt exists"
+                        "success" => false,
+                        "message" => "User doesn't exist"
                     ],
                     Response::HTTP_BAD_REQUEST
                 );
             }
 
-            if($member_room > 1){
-                $newMessage = Chat::create([
-                    'message' => $message,
-                    'user_id' => $user,
-                ]);
-            }
+            // if ($member_room) {
+            //     $newMessage = $user->userChats()->create([
+            //         'message' => $message,
+            //     ]);
+            //     $member_room->chats()->attach($newMessage->id);
+            // }
 
             return response()->json(
                 [
@@ -59,7 +57,6 @@ class ChatController extends Controller
                 Response::HTTP_INTERNAL_SERVER_ERROR
             );
         }
-
 
         return 'Create message';
     }

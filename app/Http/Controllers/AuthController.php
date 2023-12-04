@@ -98,7 +98,7 @@ class AuthController extends Controller
                 return response()->json(
                     [
                         "success" => false,
-                        "message" => "Email or password are invalid 1"
+                        "message" => "Email or password are invalid"
                     ],
                     Response::HTTP_NOT_FOUND
                 );
@@ -106,7 +106,7 @@ class AuthController extends Controller
 
             // Validamos la contraseña
             if (!Hash::check($password, $user->password)) {
-                throw new Error('Email or password are invalid 2');
+                throw new Error('Email or password are invalid');
             }
 
             // creamos token
@@ -122,11 +122,11 @@ class AuthController extends Controller
             );
         } catch (\Throwable $th) {
             Log::error($th->getMessage());
-            if($th->getMessage() === 'Email or password are invalid 2') {
+            if($th->getMessage() === 'Email or password are invalid') {
                 return response()->json(
                     [
                         "success" => false,
-                        "message" => "Email or password are invalid 2"
+                        "message" => "Email or password are invalid"
                     ],
                     Response::HTTP_NOT_FOUND
                 );
