@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Game;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -114,4 +115,32 @@ class UserController extends Controller
             );
         }
     }
+
+    public function getAllGames(Request $request)
+    {
+        try {
+
+            $games = Game::all();
+
+            return response()->json(
+                [
+                    "success" => true,
+                    "message" => "Get games successfully",
+                    "data" => $games
+                ],
+                Response::HTTP_OK
+            );
+        } catch (\Throwable $th) {
+            Log::error($th->getMessage());
+
+            return response()->json(
+                [
+                    "success" => false,
+                    "message" => "Error getting games"
+                ],
+                Response::HTTP_INTERNAL_SERVER_ERROR
+            );
+        }
+    }
+
 }
