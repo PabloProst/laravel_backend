@@ -20,7 +20,7 @@ Route::group([
         'is_super_admin'
     ]
 ], function () {
-    Route::get('/users', [UserController::class, 'getAllUsers']);
+    Route::get('/users', [SuperAdminController::class, 'getAllUsers']);
     Route::get('/users/{id}', [UserController::class, 'getUserByIdWithCreateRooms']);
     Route::delete('/delete/{id}', [SuperAdminController::class, 'deleteUserById']);
     Route::post('/creategame', [SuperAdminController::class, 'createGame']);

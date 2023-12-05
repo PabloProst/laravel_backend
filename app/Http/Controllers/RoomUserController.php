@@ -20,7 +20,7 @@ class RoomUserController extends Controller
                     "room_id" => $request->input('room_id'),
                 ]
             );
-            
+
             return response()->json(
                 [
                     "success" => true,
@@ -40,7 +40,7 @@ class RoomUserController extends Controller
                 Response::HTTP_INTERNAL_SERVER_ERROR
             );
         }
-}
+    }
     public function deleteMember(Request $request)
     {
         try {
@@ -70,15 +70,15 @@ class RoomUserController extends Controller
                 Response::HTTP_INTERNAL_SERVER_ERROR
             );
         }
-}
+    }
 
-public function getAllPartiesById(Request $request)
+    public function getAllPartiesById(Request $request)
     {
         try {
             $userId = auth()->id();
 
             $userParties = RoomUser::where('user_id', $userId)->get();
-            
+
             return response()->json(
                 [
                     "success" => true,
@@ -98,4 +98,20 @@ public function getAllPartiesById(Request $request)
                 Response::HTTP_INTERNAL_SERVER_ERROR
             );
         }
-    }}
+    }
+
+    public function getAllMembersById(Request $request, $id)
+    {
+        try {
+            $userId = auth()->id();
+            
+            
+
+
+
+
+        } catch (\Throwable $th) {
+            
+        }
+    }
+}
