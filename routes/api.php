@@ -5,6 +5,7 @@ use App\Http\Controllers\ChatController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\RoomUserController;
+use App\Http\Controllers\SuperAdminController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -21,6 +22,8 @@ Route::group([
 ], function () {
     Route::get('/users', [UserController::class, 'getAllUsers']);
     Route::get('/users/{id}', [UserController::class, 'getUserByIdWithCreateRooms']);
+    Route::delete('/delete/{id}', [SuperAdminController::class, 'deleteUserById']);
+    Route::post('/creategame', [SuperAdminController::class, 'createGame']);
 });
 
 Route::group([
