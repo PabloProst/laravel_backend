@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Rooms;
+use App\Models\RoomUser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,6 +28,15 @@ class RoomController extends Controller
                     "game_id" => $request->input('game_id'),
                 ]
             );
+
+            $createdRoom = Rooms::latest()->first();
+
+            $newMember = RoomUser::create(
+                [
+                    "user_id" => $userId,
+                    "room_id" => $createdRoom -> id
+                ]
+                );
 
             return response()->json(
                 [
