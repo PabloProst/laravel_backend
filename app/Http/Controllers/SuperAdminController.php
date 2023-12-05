@@ -7,7 +7,6 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
-use Laravel\Sanctum\PersonalAccessToken;
 use Symfony\Component\HttpFoundation\Response;
 
 class SuperAdminController extends Controller
@@ -105,43 +104,17 @@ class SuperAdminController extends Controller
         }
     }
 
-
-    public function updateGame(Request $request, $id)
+    public function deleteGameById(Request $request, $id)
     {
         try {
-            $accessToken = $request->bearerToken();
-            $token = PersonalAccessToken::findToken($accessToken);
-            $game = Game::query()->find($id);
 
-            // if (!$token !== 'super_admin') {
-            //     return response()->json(
-            //         [
-            //             "success" => true,
-            //             "message" => "Unauthorized"
-            //         ],
-            //         Response::HTTP_UNAUTHORIZED
-            //     );
-            // }
-
-
-            $title = $request->input('title');
-            $image = $request->input('image');
-
-            if ($request->has('title')) {
-                $game->title = $title;
-            }
-
-            if ($request->has('image')) {
-                $game->image = $image;
-            }
-
-            $game->save();
+            $gameDeleted = Game::destroy($id);
 
             return response()->json(
                 [
                     "success" => true,
-                    "message" => "Game updated",
-                    "data" => $game
+                    "message" => "Game deleted",
+                    "data" => $gameDeleted
                 ],
                 Response::HTTP_OK
             );
@@ -151,7 +124,7 @@ class SuperAdminController extends Controller
             return response()->json(
                 [
                     "success" => false,
-                    "message" => "Error updating game"
+                    "message" => "Error deleting game"
                 ],
                 Response::HTTP_INTERNAL_SERVER_ERROR
             );
