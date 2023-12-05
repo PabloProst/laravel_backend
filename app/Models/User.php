@@ -60,4 +60,10 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(RoomUser::class);
     }
+
+    public function usersInRoom()
+    {
+        return $this->belongsToMany(Rooms::class, 'room_user');
+    }
+
 }

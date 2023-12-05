@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\RoomUser;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\Response;
+
+use function Laravel\Prompts\error;
 
 class RoomUserController extends Controller
 {
@@ -20,7 +23,7 @@ class RoomUserController extends Controller
                     "room_id" => $request->input('room_id'),
                 ]
             );
-            
+
             return response()->json(
                 [
                     "success" => true,
@@ -40,7 +43,7 @@ class RoomUserController extends Controller
                 Response::HTTP_INTERNAL_SERVER_ERROR
             );
         }
-}
+    }
     public function deleteMember(Request $request)
     {
         try {
@@ -70,15 +73,15 @@ class RoomUserController extends Controller
                 Response::HTTP_INTERNAL_SERVER_ERROR
             );
         }
-}
+    }
 
-public function getAllPartiesById(Request $request)
+    public function getAllPartiesById(Request $request)
     {
         try {
             $userId = auth()->id();
 
             $userParties = RoomUser::where('user_id', $userId)->get();
-            
+
             return response()->json(
                 [
                     "success" => true,
@@ -98,4 +101,36 @@ public function getAllPartiesById(Request $request)
                 Response::HTTP_INTERNAL_SERVER_ERROR
             );
         }
-    }}
+    }
+
+    public function getAllMembersById(Request $request, $id)
+    {
+        try {
+
+            $room = RoomUser::where('room_id', $id)->get(['user_id']);
+            $roomMembers = User::whereIn('id', $room)->get(['nickname']);
+
+            return response()->json(
+                [
+                    "success" => true,
+                    "message" => "Members",
+                    "data" => $roomMembers
+                ],
+                Response::HTTP_OK
+
+            );
+        }
+
+         catch (\Throwable $th) {
+             Log::error($th->getMessage());
+
+            return response()->json(
+                [
+                    "success" => false,
+                    "message" => "Error getting members"
+                ],
+                Response::HTTP_INTERNAL_SERVER_ERROR
+            );
+        }
+        }
+    }

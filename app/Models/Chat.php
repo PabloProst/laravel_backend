@@ -19,6 +19,6 @@ class Chat extends Model
 
     public function roomChats(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'room_id');
+        return $this->belongsTo(Rooms::class, 'room_id');
     }
 }

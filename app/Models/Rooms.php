@@ -18,7 +18,7 @@ class Rooms extends Model
         return $this->belongsTo(Game::class, 'game_id');
     }
 
-    public function user(): BelongsTo
+    public function users(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
@@ -31,5 +31,10 @@ class Rooms extends Model
     public function roomMembers(): HasMany
     {
         return $this->hasMany(RoomUser::class);
+    }
+
+    public function usersInRoom() 
+    {
+        return $this->belongsToMany(User::class, 'room_user', 'room_id', 'user_id');
     }
 }
