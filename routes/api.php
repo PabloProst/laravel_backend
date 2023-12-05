@@ -38,6 +38,8 @@ Route::group([
     Route::post('/message', [ChatController::class, 'createMessage']);
     Route::delete('/message/delete/{id}', [ChatController::class, 'deleteMessageById']);
     Route::put('/message/update/{id}', [ChatController::class, 'updateMessageById']);
+    Route::delete('/deleteroom/{id}', [RoomController::class, 'deleteRoomById']);
+    Route::put('/room/update/{id}', [RoomController::class, 'updateRoomById']);
     Route::get('/getallmessages', [ChatController::class, 'getAllMessages']);
     Route::put('/user/update', [userController::class, 'updateUser']);
     Route::post('/newroom', [RoomController::class, 'newRoom']);
@@ -51,6 +53,3 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
 Route::get('/getallgames', [UserController::class, 'getAllGames']);
-
-
-
