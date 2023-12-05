@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\RoomUser;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\Response;
+
+use function Laravel\Prompts\error;
 
 class RoomUserController extends Controller
 {
@@ -103,15 +106,31 @@ class RoomUserController extends Controller
     public function getAllMembersById(Request $request, $id)
     {
         try {
-            $userId = auth()->id();
-            
-            
 
+            $room = RoomUser::where('room_id', $id)->get(['user_id']);
+            $roomMembers = User::whereIn('id', $room)->get(['nickname']);
 
+            return response()->json(
+                [
+                    "success" => true,
+                    "message" => "Members",
+                    "data" => $roomMembers
+                ],
+                Response::HTTP_OK
 
+            );
+        }
 
-        } catch (\Throwable $th) {
-            
+         catch (\Throwable $th) {
+             Log::error($th->getMessage());
+
+            return response()->json(
+                [
+                    "success" => false,
+                    "message" => "Error getting members"
+                ],
+                Response::HTTP_INTERNAL_SERVER_ERROR
+            );
+        }
         }
     }
-}

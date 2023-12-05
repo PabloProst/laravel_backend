@@ -44,6 +44,7 @@ Route::group([
     Route::post('/newmember', [RoomUserController::class, 'newMember']);
     Route::delete('/deletemember', [RoomUserController::class, 'deleteMember']);
     Route::get('/getallparties', [RoomUserController::class, 'getAllPartiesById']);
+    Route::get('/getallmembers/{id}', [RoomUserController::class, 'getAllMembersById']);
 });
 
 Route::post('/register', [AuthController::class, 'register']);
