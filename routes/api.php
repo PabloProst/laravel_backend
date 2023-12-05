@@ -33,6 +33,7 @@ Route::group([
     Route::post('/message', [ChatController::class, 'createMessage']);
     Route::delete('/message/delete/{id}', [ChatController::class, 'deleteMessageById']);
     Route::put('/message/update/{id}', [ChatController::class, 'updateMessageById']);
+    Route::delete('/deleteroom/{id}', [RoomController::class, 'deleteRoomById']);
     Route::put('/user/update', [userController::class, 'updateUser']);
     Route::post('/newroom', [RoomController::class, 'newRoom']);
     Route::post('/newmember', [RoomUserController::class, 'newMember']);

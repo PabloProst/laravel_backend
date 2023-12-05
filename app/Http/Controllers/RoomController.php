@@ -49,4 +49,47 @@ class RoomController extends Controller
         }
     }
 
+    public function deleteRoomById(Request $request, $id)
+    {
+        try {
+
+            $room = Rooms::find($id);
+
+            if (!$room) {
+                return response()->json([
+                    "success" => false,
+                    "message" => "Room not found",
+                ], Response::HTTP_NOT_FOUND);
+            }
+
+            if ($room->user_id !== auth()->id()) {
+                return response()->json([
+                    "success" => false,
+                    "message" => "Unauthorized. You can only delete your own rooms.",
+                ], Response::HTTP_UNAUTHORIZED);
+            }
+
+            $deleteRoom = Rooms::destroy($id);
+
+            return response()->json(
+                [
+                    "success" => true,
+                    "message" => "Room deleted",
+                    "data" => $deleteRoom
+                ],
+                Response::HTTP_OK
+            );
+        } catch (\Throwable $th) {
+            Log::error($th->getMessage());
+
+            return response()->json(
+                [
+                    "success" => false,
+                    "message" => "Error deleting Room by id"
+                ],
+                Response::HTTP_INTERNAL_SERVER_ERROR
+            );
+        }
+    }
+
 }
