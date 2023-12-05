@@ -24,6 +24,7 @@ Route::group([
     Route::get('/users/{id}', [UserController::class, 'getUserByIdWithCreateRooms']);
     Route::delete('/delete/{id}', [SuperAdminController::class, 'deleteUserById']);
     Route::post('/creategame', [SuperAdminController::class, 'createGame']);
+    Route::put('/updategame/{id}', [SuperAdminController::class, 'updateGame']);
 });
 
 Route::group([

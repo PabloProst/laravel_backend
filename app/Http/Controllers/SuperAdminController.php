@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
+use Laravel\Sanctum\PersonalAccessToken;
 use Symfony\Component\HttpFoundation\Response;
 
 class SuperAdminController extends Controller
@@ -98,6 +99,59 @@ class SuperAdminController extends Controller
                 [
                     "success" => false,
                     "message" => "Error creating game"
+                ],
+                Response::HTTP_INTERNAL_SERVER_ERROR
+            );
+        }
+    }
+
+
+    public function updateGame(Request $request, $id)
+    {
+        try {
+            $accessToken = $request->bearerToken();
+            $token = PersonalAccessToken::findToken($accessToken);
+            $game = Game::query()->find($id);
+
+            // if (!$token !== 'super_admin') {
+            //     return response()->json(
+            //         [
+            //             "success" => true,
+            //             "message" => "Unauthorized"
+            //         ],
+            //         Response::HTTP_UNAUTHORIZED
+            //     );
+            // }
+
+
+            $title = $request->input('title');
+            $image = $request->input('image');
+
+            if ($request->has('title')) {
+                $game->title = $title;
+            }
+
+            if ($request->has('image')) {
+                $game->image = $image;
+            }
+
+            $game->save();
+
+            return response()->json(
+                [
+                    "success" => true,
+                    "message" => "Game updated",
+                    "data" => $game
+                ],
+                Response::HTTP_OK
+            );
+        } catch (\Throwable $th) {
+            Log::error($th->getMessage());
+
+            return response()->json(
+                [
+                    "success" => false,
+                    "message" => "Error updating game"
                 ],
                 Response::HTTP_INTERNAL_SERVER_ERROR
             );
