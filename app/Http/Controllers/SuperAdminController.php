@@ -161,7 +161,7 @@ class SuperAdminController extends Controller
         }
     }
 
-    public function updateGame(Request $request, $id)
+    public function updateGameById(Request $request, $id)
     {
         try {
             $accessToken = $request->bearerToken();
