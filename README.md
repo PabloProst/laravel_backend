@@ -1,75 +1,274 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# LARAVEL CHAT APP
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+<details>
+  <summary>Content 📝</summary>
+  <ol>
+    <li><a href="#about-the-project">About the project</a></li>
+    <li><a href="#stack">Stack</a></li>
+    <li><a href="#database-diagram">Database diagram</a></li>
+    <li><a href="#local-installation">Local installation</a></li>
+    <li><a href="#endpoints">Endpoints</a></li>
+    <li><a href="#future-features">Future features</a></li>
+    <li><a href="#errors">Errors</a></li>
+    <li><a href="#developer">Developer</a></li>
+    <li><a href="#acknowledgments">Acknowledgments</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ol>
+</details>
+
+## About the project
+This project consists of a backend for a chatting app using the framework of PHP Laravel, working with a MySQL database.
+
+## Stack
+Technologies used:
+<div align="center">
+<a href="https://www.mysql.com/">
+    <img src= "https://img.shields.io/badge/MySQL-00000F?style=for-the-badge&logo=mysql&logoColor=white"/>
+</a>
+<a href="https://www.php.net/">
+    <img src= "https://img.shields.io/badge/PHP-777BB4?style=for-the-badge&logo=php&logoColor=white"/>
+</a>
+<a href="https://laravel.com/">
+    <img src= "https://img.shields.io/badge/Laravel-FF2D20?style=for-the-badge&logo=laravel&logoColor=white"/>
+</a>
+<a href="https://getcomposer.org/">
+    <img src= "https://img.shields.io/badge/Composer-885630?style=for-the-badge&logo=Composer&logoColor=white"/>
+</a>
+  <a href="https://git-scm.com/">
+    <img src="https://img.shields.io/badge/GIT-E44C30?style=for-the-badge&logo=git&logoColor=white"/>
+</a>
+  <a href="https://www.postman.com/">
+    <img src="https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=Postman&logoColor=white"/>
+</a>
+</div>
+
+
+## Database diagram
+![db_laravel](https://github.com/PabloProst/laravel_backend/assets/139993876/3ff4fa6d-cdde-449e-8bc0-9a069aac70b0)
+
+## Local installation
+1. Clone the repository
+2. ` $ php artisan install `
+3. We connect our repository with the database
+4. ``` $ php artisan migrate ```
+5. ``` $ php artisan db:seed "here put the name of the seed" ``` 
+6. ``` $ php artisan serve ``` 
+7. ...
+
+## Endpoints
+<details>
+<summary>Endpoints</summary>
+
+- USERS
+    - REGISTER
+
+            POST http://localhost:8000/api/register
+        body:
+        ``` json
+            {
+                "name": "Alex",
+                "nickname": "VALDITOR"
+                "email": "alex@gmail.com",
+                "password": "Alex!"
+            }
+        ```
+
+    - LOG IN
+
+            POST http://localhost:8000/api/login 
+        body:
+        ``` json
+            {
+                "email": "alex@gmail.com",
+                "password": "Alex!"
+            }
+        ```
+    - LOG OUT
+
+            POST http://localhost:8000/api/logout
+
+    - PROFILE (Requires Auth: user)
+
+            GET http://localhost:8000/api/profile
+
+    - UPDATE (Requires Auth: user)
+
+            PUT http://localhost:8000/api/user/update 
+   body:
+  ``` json
+               {
+                  "name": "Alejandro",
+                  "nickname": "Torvaldi"
+              }
+   ```
+
+  - GET ROOMS CREATED BY USER BY (Requires Auth)
+
+            GET http://localhost:8000/api/users/3
+
+  - GET ALL GAMES
+
+            GET http://localhost:8000/api/getallgames
+        
+- ROOMS
+    - NEW ROOM (Requires Auth: user)
+
+            POST http://localhost:8000/api/newroom
+        body:
+        ``` json
+            {
+                "name": "freaks",
+                "game_id": "2"
+            }
+        ```
+
+    - UPDATE ROOM (Requires Auth: user)
+
+            PUT http://localhost:8000/api/update/4
+      body:
+        ``` json
+            {
+                "name": "cs2",
+            }
+        ```
+
+    - DELETE ROOM (Requires Auth: user)
+
+            DELETE http://localhost:8000/api/deleteroom/5
+
+- ROOMS USERS
+    - NEW MEMBER (Requires Auth: user)
+
+            POST http://localhost:8000/api/newmember/:id
+    body:
+        ``` json
+            {
+                "room_id": "1",
+            }
+        ```
+  
+    - DELETE MEMBER (Requires Auth: user)
+
+            DELETE http://localhost:8000/api/deletemember
+    body:
+        ``` json
+            {
+                "room_id": "1",
+            }
+        ```
+
+    - GET ALL PARTIES (Requires Auth: user)
+
+            GET http://localhost:8000/api/getallparties
+
+    - GET ALL MEMBERS BY ID (Requires Auth: super admin)
+
+            GET http://localhost:8000/api/getallmembers/:id
+
+- CHAT
+
+    - CREATE MESSAGE (Requires Auth: user)
+
+            POST http://localhost:8000/api/message 
+   body:
+  ``` json
+               {
+                  "message": "Hello There",
+                  "room_id": 4
+              }
+   ```
+  
+    - DELETE MESSAGE (Requires Auth: user)
+
+            DELETE http://localhost:8000/api/delete/:id
+
+     - UPDATE MESSAGE (Requires Auth: user)
+
+            PUT http://localhost:8000/api/update/:id
+       
+        body:
+        ``` json
+            {
+                "message": "Bye There",
+            }
+        ```
+
+    - GET ALL MESSAGE (Requires Auth: user)
+
+            GET http://localhost:8000/api/getallmessage
+
+- SUPERADMIN
+    - GET ALL USERS (Requires Auth: super admin)
+
+            GET http://localhost:8000/api/users
+
+    - DELETE USER (Requires Auth: super admin)
+
+            DELETE http://localhost:8000/api/delete/:id
+  
+
+    - CREATE GAME (Requires Auth: super admin)
+
+            POST http://localhost:8000/api/creategame
+  body:
+   ``` json
+            {
+               "tittle": "Counter Strike 2",
+               "image": "url image"
+            }
+    ```
+   - UPDATE GAME (Requires Auth: super admin)
+
+            POST http://localhost:8000/api/updategame/:id
+  body:
+   ``` json
+            {
+               "image": "url image new"
+            }
+    ```
+   
+   - DELETE GAME (Requires Auth: super admin)
+
+            POST http://localhost:8000/api/deletegame/:id
+</details>
+
+## Future features
+- That the endpoints bring the nickname of the users instead the users id´s.
+- Add more validators 
+- Formart the response of the endpoints 
+
+## Errors
+- The endpoints only can get the numbers of the id instead the nicknames.
+
+## Developer
+
+``` js
+ const developers = "valditor ", "pvblo ", "BGMiralles;
+
+ console.log("Developed by Alex Valdivielso, Pablo Prost and Borja Gutierrez a.k.a: " + developers);
+```  
+
+## Acknowledgments
+
+We would like to thanks our classmates and teachers from the Geekshub FSD Bootcamp for their collaboration helping us me complete this project.
+
+## Contact
+<p>
+    Alex Valdivielso
 </p>
-
-## About Laravel
-
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
-
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
-
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
-
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
-
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-## Laravel Sponsors
-
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-
-
-PERROOOOOO
-Perroooo
-<<<<<<<<< Temporary merge branch 1
-
-asdasdasd
-=========
-perrooooooooo
+<a href="https://www.linkedin.com/in/alejandro-valdivielso-tortosa-9b2154273/" target="_blank"><img src="https://img.shields.io/badge/-LinkedIn-%230077B5?style=for-the-badge&logo=linkedin&logoColor=white" target="_blank"></a>
+<a href="https://github.com/VALDITOR" target="_blank"><img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white" target="_blank"></a>
+</p>
+<p>
+<p>
+    Pablo Prost
+</p>
+<a href="https://www.linkedin.com/in/pablo-ezequiel-prost-926ab6297/" target="_blank"><img src="https://img.shields.io/badge/-LinkedIn-%230077B5?style=for-the-badge&logo=linkedin&logoColor=white" target="_blank"></a>
+<a href="https://github.com/PabloProst" target="_blank"><img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white" target="_blank"></a>
+</p>
+<p>
+    Borja Gutierrez
+</p>
+<a href="https://www.linkedin.com/in/borjagutierrezmiralles/" target="_blank"><img src="https://img.shields.io/badge/-LinkedIn-%230077B5?style=for-the-badge&logo=linkedin&logoColor=white" target="_blank"></a> 
+<a href="https://github.com/BGMiralles" target="_blank"><img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white" target="_blank"></a>
+</p>
